@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ingestion Report</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+         margin: 0; padding: 24px; line-height: 1.5; background: #f7f7f8; color: #1a1a1a; }
+  h1 { font-size: 1.5rem; margin: 0 0 4px; }
+  .sub { color: #6b7280; margin: 0 0 20px; }
+  .controls { background:#fff; border:1px solid #e2e2e6; border-radius:10px;
+              padding:16px; margin-bottom:20px; }
+  label.filebtn { display:inline-block; font-size:1rem; padding:10px 16px; border-radius:8px;
+    border:1px solid #0a66ff; background:#0a66ff; color:#fff; cursor:pointer; }
+  input[type=file] { display:none; }
+  #status { margin-left:12px; color:#6b7280; }
+  .run { background:#fff; border:1px solid #e2e2e6; border-radius:10px;
+         padding:16px 18px; margin-bottom:16px; }
+  .run h2 { font-size:1.1rem; margin:0 0 2px; }
+  .when { color:#6b7280; font-size:.9rem; margin:0 0 12px; }
+  .counts { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+  .chip { padding:4px 10px; border-radius:999px; font-size:.85rem;
+          background:#eef1f6; border:1px solid #dde1e8; }
+  .chip b { font-weight:700; }
+  table { border-collapse:collapse; width:100%; font-size:.88rem; }
+  th, td { border:1px solid #e2e2e6; padding:6px 8px; text-align:left; vertical-align:top; }
+  th { background:#f0f1f4; }
+  .reason { color:#9a6700; }
+  .empty { color:#6b7280; font-style:italic; }
+  code { font-family: ui-monospace, Menlo, Consolas, monospace; word-break:break-all; }
+  @media (prefers-color-scheme: dark) {
+    body { background:#16181d; color:#e7e9ee; }
+    .run, .controls { background:#1f232b; border-color:#333a45; }
+    th { background:#272c35; }
+    th, td { border-color:#333a45; }
+    .chip { background:#272c35; border-color:#333a45; }
+    .reason { color:#f0c674; }
+    .sub, .when, #status, .empty { color:#9aa3b2; }
+  }
+</style>
+</head>
+<body>
+  <h1>Ingestion Report</h1>
+  <p class="sub">Open <code>ingestion-log.json</code> to see each run, newest first.</p>
+
+  <div class="controls">
+    <label class="filebtn">Open ingestion-log.json
+      <input type="file" id="file" accept="application/json,.json">
+    </label>
+    <span id="status"></span>
+  </div>
+
+  <div id="runs"></div>
+
+<script>
+  const esc = s => String(s == null ? "" : s).replace(/[&<>"]/g,
+    c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+
+  document.getElementById("file").addEventListener("change", e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const r = new FileReader();
+    r.onload = () => {
+      try {
+        render(JSON.parse(r.result));
+        document.getElementById("status").textContent = "Loaded " + f.name;
+      } catch (err) {
+        document.getElementById("status").textContent = "Could not parse JSON: " + err.message;
+      }
+    };
+    r.readAsText(f);
+  });
+
+  function render(log) {
+    if (!Array.isArray(log)) log = [log];
+    const host = document.getElementById("runs");
+    host.innerHTML = "";
+    if (log.length === 0) {
+      host.innerHTML = '<p class="empty">No runs in the log yet.</p>';
+      return;
+    }
+    for (let i = log.length - 1; i >= 0; i--) {     // newest first
+      host.appendChild(runEl(log[i], i + 1));
+    }
+  }
+
+  function chip(label, v) {
+    return '<span class="chip">' + label + " <b>" + (v == null ? 0 : v) + "</b></span>";
+  }
+
+  function runEl(run, n) {
+    const c = run.counts || {};
+    const nl = run.not_loaded || [];
+    const div = document.createElement("div");
+    div.className = "run";
+
+    let rows;
+    if (nl.length === 0) {
+      rows = '<p class="empty">Every row was loaded, updated, or skipped - nothing to review.</p>';
+    } else {
+      rows = '<table><thead><tr>'
+        + '<th>book_id</th><th>title</th><th>isbn</th><th>isbn13</th><th>reason</th>'
+        + '</tr></thead><tbody>'
+        + nl.map(x =>
+            '<tr><td>' + esc(x.book_id) + '</td><td>' + esc(x.title) + '</td>'
+            + '<td><code>' + esc(x.isbn) + '</code></td>'
+            + '<td><code>' + esc(x.isbn13) + '</code></td>'
+            + '<td class="reason">' + esc(x.reason) + '</td></tr>').join("")
+        + '</tbody></table>';
+    }
+
+    div.innerHTML =
+      "<h2>Run " + n + " — " + esc(run.file) + "</h2>"
+      + '<p class="when">' + esc(run.timestamp) + "</p>"
+      + '<div class="counts">'
+      + chip("read", c.read) + chip("loaded", c.loaded) + chip("updated", c.updated)
+      + chip("already existed", c.skipped_existing) + chip("rejected", c.rejected)
+      + "</div>" + rows;
+    return div;
+  }
+</script>
+</body>
+</html>
