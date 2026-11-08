@@ -19,6 +19,9 @@
   .run { background:#fff; border:1px solid #e2e2e6; border-radius:10px;
          padding:16px 18px; margin-bottom:16px; }
   .run h2 { font-size:1.1rem; margin:0 0 2px; }
+  .run h3 { font-size:.95rem; margin:16px 0 6px; }
+  td code { white-space:nowrap; }
+  .run table { display:block; overflow-x:auto; }
   .when { color:#6b7280; font-size:.9rem; margin:0 0 12px; }
   .counts { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
   .chip { padding:4px 10px; border-radius:999px; font-size:.85rem;
@@ -90,34 +93,47 @@
     return '<span class="chip">' + label + " <b>" + (v == null ? 0 : v) + "</b></span>";
   }
 
+  function table(cols, rows, cells) {
+    if (!rows || rows.length === 0) return '<p class="empty">None.</p>';
+    return '<table><thead><tr>' + cols.map(c => '<th>' + c + '</th>').join("")
+      + '</tr></thead><tbody>'
+      + rows.map(r => '<tr>' + cells(r).map(c => '<td>' + c + '</td>').join("") + '</tr>').join("")
+      + '</tbody></table>';
+  }
+
   function runEl(run, n) {
-    const c = run.counts || {};
-    const nl = run.not_loaded || [];
+    const warnings = run.warnings || [];
+    const repairs = warnings.filter(w => w.after != null && w.after !== "");
+    const unfixable = warnings.filter(w => w.after == null || w.after === "");
+    const t = run.database_totals || {};
     const div = document.createElement("div");
     div.className = "run";
-
-    let rows;
-    if (nl.length === 0) {
-      rows = '<p class="empty">Every row was loaded, updated, or skipped - nothing to review.</p>';
-    } else {
-      rows = '<table><thead><tr>'
-        + '<th>book_id</th><th>title</th><th>isbn</th><th>isbn13</th><th>reason</th>'
-        + '</tr></thead><tbody>'
-        + nl.map(x =>
-            '<tr><td>' + esc(x.book_id) + '</td><td>' + esc(x.title) + '</td>'
-            + '<td><code>' + esc(x.isbn) + '</code></td>'
-            + '<td><code>' + esc(x.isbn13) + '</code></td>'
-            + '<td class="reason">' + esc(x.reason) + '</td></tr>').join("")
-        + '</tbody></table>';
-    }
-
     div.innerHTML =
-      "<h2>Run " + n + " — " + esc(run.file) + "</h2>"
-      + '<p class="when">' + esc(run.timestamp) + "</p>"
+      "<h2>Run " + n + " — " + esc(run.source_file) + "</h2>"
+      + '<p class="when">' + esc(run.run_at) + "</p>"
       + '<div class="counts">'
-      + chip("read", c.read) + chip("loaded", c.loaded) + chip("updated", c.updated)
-      + chip("already existed", c.skipped_existing) + chip("rejected", c.rejected)
-      + "</div>" + rows;
+      + chip("rows read", run.rows_read) + chip("loaded", run.loaded)
+      + chip("updated", run.updated) + chip("skipped", run.skipped)
+      + chip("rejected", run.rejected) + "</div>"
+      + "<h3>Rejected rows</h3>"
+      + table(["book_id", "title", "isbn", "isbn13", "reason"], run.rejected_rows, x => [
+          esc(x.book_id), esc(x.title), "<code>" + esc(x.isbn) + "</code>",
+          "<code>" + esc(x.isbn13) + "</code>", '<span class="reason">' + esc(x.reason) + "</span>"])
+      + "<h3>Repairs (before → after)</h3>"
+      + table(["book_id", "title", "field", "before → after", "reason"], repairs, w => [
+          esc(w.book_id), esc(w.title), esc(w.field),
+          "<code>" + esc(w.before) + "</code> → <code>" + esc(w.after) + "</code>", esc(w.reason)])
+      + "<h3>Warnings (ISBN not usable, stored as NULL)</h3>"
+      + table(["book_id", "title", "field", "value", "reason"], unfixable, w => [
+          esc(w.book_id), esc(w.title), esc(w.field), "<code>" + esc(w.before) + "</code>",
+          '<span class="reason">' + esc(w.reason) + "</span>"])
+      + "<h3>Updated rows</h3>"
+      + table(["book_id", "title", "changed columns"], run.updated_rows, u => [
+          esc(u.book_id), esc(u.title), esc((u.changed_columns || []).join(", "))])
+      + "<h3>Database totals after this run</h3>"
+      + '<div class="counts">' + chip("books", t.total_books)
+      + chip("with an ISBN-13", t.books_with_isbn13)
+      + chip("without any ISBN", t.books_without_isbn) + "</div>";
     return div;
   }
 </script>

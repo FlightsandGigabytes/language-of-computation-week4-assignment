@@ -1,0 +1,37 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Library/Developer/CommandLineTools/usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment
+plugins: anyio-4.12.1, asyncio-1.2.0
+asyncio: mode=strict, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 27 items
+
+test_ingest.py::test_single_row_example[example_1] PASSED                [  3%]
+test_ingest.py::test_single_row_example[example_2] PASSED                [  7%]
+test_ingest.py::test_single_row_example[example_3] PASSED                [ 11%]
+test_ingest.py::test_single_row_example[example_4] PASSED                [ 14%]
+test_ingest.py::test_single_row_example[example_5] PASSED                [ 18%]
+test_ingest.py::test_single_row_example[example_6] PASSED                [ 22%]
+test_ingest.py::test_single_row_example[example_7] PASSED                [ 25%]
+test_ingest.py::test_single_row_example[example_8] PASSED                [ 29%]
+test_ingest.py::test_single_row_example[example_9] PASSED                [ 33%]
+test_ingest.py::test_single_row_example[example_10] PASSED               [ 37%]
+test_ingest.py::test_single_row_example[example_11] PASSED               [ 40%]
+test_ingest.py::test_single_row_example[example_12] PASSED               [ 44%]
+test_ingest.py::test_single_row_example[example_13] PASSED               [ 48%]
+test_ingest.py::test_single_row_example[example_14] PASSED               [ 51%]
+test_ingest.py::test_single_row_example[example_15] PASSED               [ 55%]
+test_ingest.py::test_single_row_example[example_16] PASSED               [ 59%]
+test_ingest.py::test_single_row_example[example_17] PASSED               [ 62%]
+test_ingest.py::test_example_18_isbn_already_assigned PASSED             [ 66%]
+test_ingest.py::test_example_19_duplicate_row_in_file PASSED             [ 70%]
+test_ingest.py::test_example_20_redelivery_updates_changed_column PASSED [ 74%]
+test_ingest.py::test_example_21_redelivery_with_new_title_is_rejected PASSED [ 77%]
+test_ingest.py::test_example_22_empty_isbns_never_blank_stored_isbns PASSED [ 81%]
+test_ingest.py::test_example_23_blank_title_is_rejected PASSED           [ 85%]
+test_ingest.py::test_same_file_twice_creates_no_duplicates PASSED        [ 88%]
+test_ingest.py::test_every_run_appends_to_the_log PASSED                 [ 92%]
+test_ingest.py::test_counts_add_up_to_rows_read PASSED                   [ 96%]
+test_ingest.py::test_same_file_on_empty_database_twice_gives_same_database PASSED [100%]
+
+============================== 27 passed in 2.54s ==============================

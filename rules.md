@@ -72,6 +72,7 @@ Nothing else is rejected.
 - **An empty incoming ISBN never blanks a stored ISBN.** If the incoming row has no usable ISBN and the stored row has one, the stored ISBN is kept. The row is otherwise updated, or skipped if nothing else changed.
 - A second row in the same file with the same `book_id` but different content is a re-delivery. It is compared against what the first row just loaded.
 - Running the same file twice therefore gives zero new and zero updated rows the second time; every row is `skipped`.
+- When comparing, only the CSV columns other than isbn and isbn13, plus isbn10 and isbn13, count. isbn_raw, isbn13_raw, last_source_file and last_loaded_at are ignored.
 
 ## 8. Database
 
@@ -90,8 +91,10 @@ Every run appends one entry to `ingestion-log.json`. The file is created if miss
 
 - `run_at` (ISO timestamp), `source_file`, `rows_read`
 - the counts `loaded` (new), `updated`, `skipped` and `rejected`, where loaded + updated + skipped + rejected = `rows_read`
+- The counts are top-level keys of the entry, next to rows_read.
 - `rejected_rows`: every row not loaded, with `book_id`, `title`, the raw `isbn` and `isbn13`, and a `reason` sentence naming the problem and the value
 - `warnings`: every loaded or updated row that had a repair or an unfixable ISBN, with `book_id`, `title`, `field`, `before`, `after` and `reason`
+- updated_rows: every updated row, with book_id, title and changed_columns (the names of the columns that changed)
 - `database_totals` after the run: total books, books with an ISBN-13, and books without any ISBN
 
 `report.html` is a single file that opens from disk with no server. It reads `ingestion-log.json` and shows the runs newest first: the counts, the rejected rows with reasons, the repairs (before → after), the warnings, and the database totals.

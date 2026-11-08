@@ -1,0 +1,564 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.9.6, pytest-8.4.2, pluggy-1.6.0 -- /Library/Developer/CommandLineTools/usr/bin/python3
+cachedir: .pytest_cache
+rootdir: /Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment
+plugins: anyio-4.12.1, asyncio-1.2.0
+asyncio: mode=strict, debug=False, asyncio_default_fixture_loop_scope=None, asyncio_default_test_loop_scope=function
+collecting ... collected 27 items
+
+test_ingest.py::test_single_row_example[example_1] FAILED                [  3%]
+test_ingest.py::test_single_row_example[example_2] FAILED                [  7%]
+test_ingest.py::test_single_row_example[example_3] FAILED                [ 11%]
+test_ingest.py::test_single_row_example[example_4] FAILED                [ 14%]
+test_ingest.py::test_single_row_example[example_5] FAILED                [ 18%]
+test_ingest.py::test_single_row_example[example_6] FAILED                [ 22%]
+test_ingest.py::test_single_row_example[example_7] FAILED                [ 25%]
+test_ingest.py::test_single_row_example[example_8] FAILED                [ 29%]
+test_ingest.py::test_single_row_example[example_9] FAILED                [ 33%]
+test_ingest.py::test_single_row_example[example_10] FAILED               [ 37%]
+test_ingest.py::test_single_row_example[example_11] FAILED               [ 40%]
+test_ingest.py::test_single_row_example[example_12] FAILED               [ 44%]
+test_ingest.py::test_single_row_example[example_13] FAILED               [ 48%]
+test_ingest.py::test_single_row_example[example_14] FAILED               [ 51%]
+test_ingest.py::test_single_row_example[example_15] FAILED               [ 55%]
+test_ingest.py::test_single_row_example[example_16] FAILED               [ 59%]
+test_ingest.py::test_single_row_example[example_17] FAILED               [ 62%]
+test_ingest.py::test_example_18_isbn_already_assigned FAILED             [ 66%]
+test_ingest.py::test_example_19_duplicate_row_in_file FAILED             [ 70%]
+test_ingest.py::test_example_20_redelivery_updates_changed_column FAILED [ 74%]
+test_ingest.py::test_example_21_redelivery_with_new_title_is_rejected FAILED [ 77%]
+test_ingest.py::test_example_22_empty_isbns_never_blank_stored_isbns FAILED [ 81%]
+test_ingest.py::test_example_23_blank_title_is_rejected FAILED           [ 85%]
+test_ingest.py::test_same_file_twice_creates_no_duplicates FAILED        [ 88%]
+test_ingest.py::test_every_run_appends_to_the_log FAILED                 [ 92%]
+test_ingest.py::test_counts_add_up_to_rows_read FAILED                   [ 96%]
+test_ingest.py::test_same_file_on_empty_database_twice_gives_same_database PASSED [100%]
+
+=================================== FAILURES ===================================
+______________________ test_single_row_example[example_1] ______________________
+
+ws = <test_ingest.Workspace object at 0x106a97700>, number = 1
+isbn = '0439139600', isbn13 = '9780439139601', want10 = '0439139600'
+want13 = '9780439139601', warned = False, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_2] ______________________
+
+ws = <test_ingest.Workspace object at 0x106a7b6d0>, number = 2
+isbn = '439023483', isbn13 = '9.78043902348e+12', want10 = '0439023483'
+want13 = '9780439023481', warned = True, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_3] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c18eb0>, number = 3
+isbn = '0-450-19827-8', isbn13 = '9780450198274', want10 = '0450198278'
+want13 = '9780450198274', warned = False, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_4] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c0feb0>, number = 4
+isbn = ' 162 001 4750 ', isbn13 = '9781620014752', want10 = '1620014750'
+want13 = '9781620014752', warned = False, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_5] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c0ffa0>, number = 5
+isbn = '031200009x', isbn13 = '9780312000097', want10 = '031200009X'
+want13 = '9780312000097', warned = False, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_6] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c58910>, number = 6
+isbn = '043965548X', isbn13 = '', want10 = '043965548X'
+want13 = '9780439655484', warned = True, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_7] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c7ca60>, number = 7
+isbn = '9781982147600', isbn13 = '', want10 = '1982147601'
+want13 = '9781982147600', warned = True, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_8] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c39370>, number = 8, isbn = ''
+isbn13 = '9780062398123', want10 = '0062398121', want13 = '9780062398123'
+warned = True, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+______________________ test_single_row_example[example_9] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c3c970>, number = 9, isbn = ''
+isbn13 = '9.78043902348e+12', want10 = None, want13 = None, warned = True
+text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_10] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c3c2b0>, number = 10
+isbn = '04390A3483', isbn13 = '', want10 = None, want13 = None, warned = True
+text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_11] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c95430>, number = 11
+isbn = '1854433017', isbn13 = '', want10 = None, want13 = None, warned = True
+text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_12] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c58f10>, number = 12
+isbn = '15287463097', isbn13 = '', want10 = None, want13 = None, warned = True
+text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_13] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c79a60>, number = 13
+isbn = '7442912', isbn13 = '', want10 = None, want13 = None, warned = True
+text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_14] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c39220>, number = 14, isbn = ''
+isbn13 = '', want10 = None, want13 = None, warned = True, text = 'no ISBN'
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_15] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c7c520>, number = 15
+isbn = '1555550126', isbn13 = '9781555550134', want10 = '1555550134'
+want13 = '9781555550134', warned = True, text = '1555550126'
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_16] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c95e20>, number = 16, isbn = ''
+isbn13 = '76783609419.0', want10 = None, want13 = None, warned = True
+text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________________ test_single_row_example[example_17] ______________________
+
+ws = <test_ingest.Workspace object at 0x106c95ac0>, number = 17, isbn = ''
+isbn13 = '9790000000001', want10 = None, want13 = '9790000000001'
+warned = False, text = None
+
+    @pytest.mark.parametrize(
+        "number, isbn, isbn13, want10, want13, warned, text", SINGLE_ROW_EXAMPLES,
+        ids=["example_%d" % e[0] for e in SINGLE_ROW_EXAMPLES])
+    def test_single_row_example(ws, number, isbn, isbn13, want10, want13, warned, text):
+        book_id = 5000 + number
+        entry = ws.run(ws.write_csv([make_row(book_id, isbn=isbn, isbn13=isbn13)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:203: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+____________________ test_example_18_isbn_already_assigned _____________________
+
+ws = <test_ingest.Workspace object at 0x106c79eb0>
+
+    def test_example_18_isbn_already_assigned(ws):
+        first = make_row(9, title="Angels & Demons", isbn="1416524797",
+                         isbn13="9.78141652479e+12")
+        second = make_row(10013, title="Another Book", isbn="1416524797")
+        entry = ws.run(ws.write_csv([first, second]))
+    
+>       assert ws.book(9)["isbn13"] == "9781416524793"
+E       KeyError: 'isbn13'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:226: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 2, loaded 1, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+____________________ test_example_19_duplicate_row_in_file _____________________
+
+ws = <test_ingest.Workspace object at 0x106c0f8e0>
+
+    def test_example_19_duplicate_row_in_file(ws):
+        row = make_row(10001, isbn="0439139600", isbn13="9780439139601")
+        entry = ws.run(ws.write_csv([row, dict(row)]))
+    
+>       assert entry["loaded"] == 1 and entry["rejected"] == 1
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:238: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 2, loaded 1, updated 0, already-exists 1, rejected 0
+Logged to ingestion-log.json; database test.db
+______________ test_example_20_redelivery_updates_changed_column _______________
+
+ws = <test_ingest.Workspace object at 0x106c585b0>
+
+    def test_example_20_redelivery_updates_changed_column(ws):
+        ws.run(ws.write_csv([make_row(132, isbn="1401308589", ratings_count=100)]))
+        entry = ws.run(ws.write_csv([make_row(132, isbn="1401308589", ratings_count=200)]))
+    
+>       assert entry["updated"] == 1
+E       KeyError: 'updated'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:248: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+input-2.csv: read 1, loaded 0, updated 0, already-exists 1, rejected 0
+Logged to ingestion-log.json; database test.db
+____________ test_example_21_redelivery_with_new_title_is_rejected _____________
+
+ws = <test_ingest.Workspace object at 0x106c95970>
+
+    def test_example_21_redelivery_with_new_title_is_rejected(ws):
+        ws.run(ws.write_csv([make_row(25, title="Deathly Hallows", isbn="0545010225")]))
+        entry = ws.run(ws.write_csv([make_row(25, title="A New Title", isbn="0545010225")]))
+    
+>       assert entry["rejected"] == 1 and entry["updated"] == 0
+E       KeyError: 'rejected'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:258: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+input-2.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+_____________ test_example_22_empty_isbns_never_blank_stored_isbns _____________
+
+ws = <test_ingest.Workspace object at 0x106df7910>
+
+    def test_example_22_empty_isbns_never_blank_stored_isbns(ws):
+        ws.run(ws.write_csv([make_row(25, isbn="0545010225", isbn13="9780545010221")]))
+        entry = ws.run(ws.write_csv([make_row(25, isbn="", isbn13="")]))
+    
+>       assert entry["skipped"] == 1 and entry["updated"] == 0
+E       KeyError: 'skipped'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:268: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+input-2.csv: read 1, loaded 0, updated 0, already-exists 0, rejected 1
+Logged to ingestion-log.json; database test.db
+___________________ test_example_23_blank_title_is_rejected ____________________
+
+ws = <test_ingest.Workspace object at 0x106cd5ac0>
+
+    def test_example_23_blank_title_is_rejected(ws):
+        entry = ws.run(ws.write_csv([make_row(7777, title="", isbn="0439139600")]))
+    
+>       assert entry["rejected"] == 1 and entry["loaded"] == 0
+E       KeyError: 'rejected'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:277: KeyError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+__________________ test_same_file_twice_creates_no_duplicates __________________
+
+ws = <test_ingest.Workspace object at 0x106cd5dc0>
+
+    def test_same_file_twice_creates_no_duplicates(ws):
+        name = ws.copy_project_file(BOOKS_CSV)
+        ws.run(name)
+        books_after_first = ws.count_books()
+    
+        second = ws.run(name)
+    
+>       assert second["loaded"] == 0 and second["updated"] == 0
+E       KeyError: 'loaded'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:293: KeyError
+----------------------------- Captured stdout call -----------------------------
+books.csv: read 10000, loaded 9166, updated 0, already-exists 0, rejected 834
+Logged to ingestion-log.json; database test.db
+books.csv: read 10000, loaded 0, updated 0, already-exists 9166, rejected 834
+Logged to ingestion-log.json; database test.db
+______________________ test_every_run_appends_to_the_log _______________________
+
+ws = <test_ingest.Workspace object at 0x106d22d00>
+
+    def test_every_run_appends_to_the_log(ws):
+        first = ws.run(ws.write_csv([make_row(1, isbn="0439139600")]))
+        ws.run(ws.write_csv([make_row(2, isbn="0450198278")]))
+        ws.run(ws.write_csv([make_row(3, isbn="1620014750")]))
+    
+        log = ws.log()
+        assert len(log) == 3
+        assert log[0] == first, "an earlier entry was overwritten"
+        for entry in log:
+            for key in ("run_at", "source_file", "rows_read"):
+>               assert key in entry
+E               AssertionError: assert 'run_at' in {'counts': {'loaded': 1, 'read': 1, 'rejected': 0, 'skipped_existing': 0, ...}, 'file': 'input-1.csv', 'not_loaded': [], 'timestamp': '2026-11-08T13:34:40-06:00'}
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:307: AssertionError
+----------------------------- Captured stdout call -----------------------------
+input-1.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+input-2.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+input-3.csv: read 1, loaded 1, updated 0, already-exists 0, rejected 0
+Logged to ingestion-log.json; database test.db
+_______________________ test_counts_add_up_to_rows_read ________________________
+
+ws = <test_ingest.Workspace object at 0x106db4b80>
+
+    def test_counts_add_up_to_rows_read(ws):
+        for path in (BOOKS_CSV, BOOKS_CSV, BATCH2_CSV):
+            name = ws.copy_project_file(path)
+            with open(path, newline="", encoding="utf-8") as f:
+                data_rows = sum(1 for _ in csv.DictReader(f))
+            entry = ws.run(name)
+    
+>           assert entry["rows_read"] == data_rows
+E           KeyError: 'rows_read'
+
+/Users/nandodesktop/Desktop/Cowork_Sandbox/AI_Masters_Projects/language-of-computation/week4-assignment/test_ingest.py:317: KeyError
+----------------------------- Captured stdout call -----------------------------
+books.csv: read 10000, loaded 9166, updated 0, already-exists 0, rejected 834
+Logged to ingestion-log.json; database test.db
+=========================== short test summary info ============================
+FAILED test_ingest.py::test_single_row_example[example_1] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_2] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_3] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_4] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_5] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_6] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_7] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_8] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_9] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_10] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_11] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_12] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_13] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_14] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_15] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_16] - KeyError: 'loaded'
+FAILED test_ingest.py::test_single_row_example[example_17] - KeyError: 'loaded'
+FAILED test_ingest.py::test_example_18_isbn_already_assigned - KeyError: 'isb...
+FAILED test_ingest.py::test_example_19_duplicate_row_in_file - KeyError: 'loa...
+FAILED test_ingest.py::test_example_20_redelivery_updates_changed_column - Ke...
+FAILED test_ingest.py::test_example_21_redelivery_with_new_title_is_rejected
+FAILED test_ingest.py::test_example_22_empty_isbns_never_blank_stored_isbns
+FAILED test_ingest.py::test_example_23_blank_title_is_rejected - KeyError: 'r...
+FAILED test_ingest.py::test_same_file_twice_creates_no_duplicates - KeyError:...
+FAILED test_ingest.py::test_every_run_appends_to_the_log - AssertionError: as...
+FAILED test_ingest.py::test_counts_add_up_to_rows_read - KeyError: 'rows_read'
+========================= 26 failed, 1 passed in 0.89s =========================
