@@ -29,10 +29,6 @@ None of the 10,014 books differs in any compared column.
 
 ## Why our data differs
 
-Our data does not differ. We agreed on one rules.md and each built our own tests and code from it.
-Where a test needed something rules.md did not say (what "the same data" means, which columns count
-when a book arrives again, where the log lists changed columns, and where the counts go), we decided
-it together and added the answer to both copies before finishing. Both databases came from the same
-three runs on byte-identical files: books.csv, books.csv again, then books-batch2.csv. The only
-differences are in how each script stores the data (the order of the columns and the type of
-`book_id`), not in the data itself.
+Our data does not differ, and in many ways that outcome was decided before either of us wrote a single test. In Module 3 every script followed its own rules and the results scattered; this time Alex and I started from one agreed rules.md, and whenever Claude stopped on a question the rules did not answer (what counts as the same data, which columns matter when a book arrives a second time, where the log records the columns that changed, and where the counts belong) we settled it together and added the identical line to both copies before either of us moved on. It reminded me of mission planning in the Army, where two crews can fly the same route and arrive at the same objective only if they briefed from the same plan and agreed on the contingencies ahead of time.
+
+We also ran our code against exactly the same input files, byte for byte, which mattered more than I expected. My original books-batch2.csv had lost its Windows line endings, and had I not downloaded it again from Canvas our databases could have drifted apart for reasons that had nothing to do with the rules. The two databases do store the data a little differently (the columns are in a different order, and my book_id is saved as text while Alex's is saved as a number); however, those are choices each script made about storage, not differences in the data itself, and once the books were matched by value all 10,014 of them lined up in every compared column. In short, the rules, the tests and the code all held, and the agreement we reached up front is what allowed them to hold.
